@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloaachen
+spec:
+  selector:
+    matchLabels:
+      app: helloaachen
+  template:
+    metadata:
+      labels:
+        app: helloaachen
+    spec:
+      containers:
+      - name: helloaachen
+        image: moaix/helloaachen:v1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8000
