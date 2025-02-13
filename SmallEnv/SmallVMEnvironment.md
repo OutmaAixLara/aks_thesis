@@ -89,6 +89,9 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
 ## Create the AKS cluster
     az aks create --resource-group $resourcegroup --name $aks --node-count 2 --generate-ssh-keys
 
+## Connect to the AKS cluster
+    az aks get-credentials --resource-group $resourcegroup --name $aks
+
 
 ## Useful commands
 
