@@ -87,10 +87,27 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
     az vm create --subscription $subscription --location $location --resource-group $resourcegroup --name $sectravmshs1 --nics $sectranicshs1 --image Canonical:0001-com-ubuntu-server-focal-daily:20_04-daily-lts-gen2:Latest --os-disk-name $sectraosdiskshs1 --os-disk-size-gb 30 --size Standard_B1s --authentication-type password --admin-username ubuntu --admin-password Password123!?
 
 ## Create the AKS cluster
-    az aks create --resource-group $resourcegroup --name $aks --node-count 2 --generate-ssh-keys
+    az aks create --resource-group $resourcegroup --name $aks --node-count 2 --enable-aad --enable-azure-rbac --vnet-subnet-id /subscriptions/$subscriptionID/resourceGroups/$resourceGroup/providers/Microsoft.Network/virtualNetworks/$companyvnet/subnets/$companysubnetkubernetes--generate-ssh-keys
+
 
 ## Connect to the AKS cluster
-    az aks get-credentials --resource-group $resourcegroup --name $aks
+    az aks get-credentials --resource-group $resourcegroup --name $aks 
+
+## Connect to the AKS nodes
+    
+    # Create debugger pod
+    kubectl debug node/<node hostname> -it --image=mcr.microsoft.com/cbl-mariner/busybox:2.0
+
+    # Start kubectl session
+    chroot /host
+
+    # exit the session
+    exit
+
+    # Delete debugger pod
+    kubectl delete pod node-debugger-aks-nodepool1-<xxxxxxxx>-<xxxxxxxxxx>-<xxxxx>
+
+
 
 
 ## Useful commands
