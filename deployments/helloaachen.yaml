@@ -2,10 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloaachen
+  #labels:
+  #  app: helloaachen
 spec:
   selector:
     matchLabels:
       app: helloaachen
+  replicas: 2
   template:
     metadata:
       labels:
@@ -23,3 +26,12 @@ spec:
             cpu: "250m"
         ports:
         - containerPort: 8000
+        volumeMounts:
+        - name: passwd-volume
+          mountPath: /etc/redis-passwd
+          readOnly: true
+      volumes:
+      - name: passwd-volume
+        secret:
+          secretName: redis-passwd
+        
