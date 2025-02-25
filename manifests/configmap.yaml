@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helloaachen-config
+  namespace: helloaachen
+  labels:
+    app.kubernetes.io/name: helloaachen
+    kubernetes.azure.com/generator: devhub
+data:
