@@ -1,0 +1,34 @@
+CREATE DATABASE DemoDB;
+GO
+
+USE DemoDB;
+GO
+
+--- Create the 'demo' table it with columns 'id' and 'state' if it does not exist
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'demo' AND schema_id = SCHEMA_ID('dbo'))
+BEGIN
+        CREATE TABLE demo (
+        id INT IDENTITY(1,1) PRIMARY KEY, -- 
+        state VARCHAR(40)
+    );
+END
+
+-- Init a new variable '@counter'
+DECLARE @counter INT = 1;
+WHILE @counter <= 40
+BEGIN
+    -- Insert a new row into the 'demo' table with 'state' set to 'queued' and keep incrementing
+    INSERT INTO demo (state) VALUES ('queued');
+    SET @counter = @counter + 1;
+END;
+GO
+
+SELECT count(*) FROM demo WHERE state = 'queued'
+GO
+
+-- Delete all rows from the 'demo' table
+DELETE FROM demo;
+GO
+
+SELECT count(*) FROM demo WHERE state = 'queued'
+GO
