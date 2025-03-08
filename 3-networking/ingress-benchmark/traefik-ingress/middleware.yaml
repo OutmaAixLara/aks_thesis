@@ -1,0 +1,11 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: add-custom-header
+  namespace: default
+spec:
+  headers:
+    customRequestHeaders:
+      X-Script-Name: "Hoi Hoi from mo-el"
+    customResponseHeaders:
+      X-Custom-Response-Header: "Doi Doi"
