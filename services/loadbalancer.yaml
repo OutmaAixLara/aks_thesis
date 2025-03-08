@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: helloaachen-lb
+  #labels:
+  #  app: helloaachen
 spec:
   selector:
     app: helloaachen

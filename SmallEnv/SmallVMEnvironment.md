@@ -9,38 +9,39 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
 ## Paramaters
 
 
-    $subscription = "Sectra One Cloud Test - Kubernetes 1"
-    $resourcegroup = "K8S-Test-Small-Env"
-    $location = "swedencentral"
+    subscription="Sectra One Cloud Test - Kubernetes 1"
+    resourcegroup="K8S-Test-Small-Env"
+    location="swedencentral"
 
 
-    $sectravnet = "sectra-vnet"
-    $sectrasubnetmanagement = "sectra-subnet-management"
-    $sectrasubnetwebservers = "sectra-subnet-webservers"
-    $sectrasubnetclientfacing = "sectra-subnet-clientfacing"
-    $sectrasubnetkubernetes = "sectra-subnet-kubernetes"
-    $sectragatewaysubnet = "GatewaySubnet"
-    $sectrasubnetmanagementcidr = "192.168.0.0/24"
-    $sectrasubnetclientfacingcidr = "192.168.1.0/24"
-    $sectrasubnetwebserverscidr = "192.168.2.0/24"
-    $sectrasubnetkubernetescidr = "192.168.8.0/24"
-    $sectragatewaysubnetcidr = "10.16.0.0/24"
-    $sectransgmanagement = "sectra-nsg-management"
-    $sectransgwebservers = "sectra-nsg-webservers"
-    $sectransgclientfacing = "sectra-nsg-clientfacing"
-    $sectransgkubernetes = "sectra-nsg-kubernetes"
-    $sectraasgshs = "sectra-asg-shs"
+    sectravnet="sectra-vnet"
+    sectrasubnetmanagement="sectra-subnet-management"
+    sectrasubnetwebservers="sectra-subnet-webservers"
+    sectrasubnetclientfacing="sectra-subnet-clientfacing"
+    sectrasubnetkubernetes="sectra-subnet-kubernetes"
+    sectragatewaysubnet="GatewaySubnet"
+    sectrasubnetmanagementcidr="192.168.0.0/24"
+    sectrasubnetclientfacingcidr="192.168.1.0/24"
+    sectrasubnetwebserverscidr="192.168.2.0/24"
+    sectrasubnetkubernetescidr="192.168.8.0/24"
+    sectragatewaysubnetcidr="10.16.0.0/24"
+    sectransgmanagement="sectra-nsg-management"
+    sectransgwebservers="sectra-nsg-webservers"
+    sectransgclientfacing="sectra-nsg-clientfacing"
+    sectransgkubernetes="sectra-nsg-kubernetes"
+    sectraasgshs="sectra-asg-shs"
 
-    $sectravmmgmt1 = "sectra-vm-mgmt1"
-    $sectranicmgmt1 = "sectra-vm-mgmt1-nic"
-    $sectraosdiskmgmt1 = "sectra-vm-mgmt1-os-disk"
-    $sectrapipmgmt1 = "sectra-vm-mgmt1-public-ip"
+    sectravmmgmt1="sectra-vm-mgmt1"
+    sectranicmgmt1="sectra-vm-mgmt1-nic"
+    sectraosdiskmgmt1="sectra-vm-mgmt1-os-disk"
+    sectrapipmgmt1="sectra-vm-mgmt1-public-ip"
 
-    $sectravmshs1 = "sectra-vm-shs1"
-    $sectranicshs1 = "sectra-vm-shs1-nic"
-    $sectraosdiskshs1 = "sectra-vm-shs1-os-disk"
+    sectravmshs1="sectra-vm-shs1"
+    sectranicshs1="sectra-vm-shs1-nic"
+    sectraosdiskshs1="sectra-vm-shs1-os-disk"
 
-    $aks = "myaks"
+    aks="myaks"
+    acr="acrthesis"
 
 
 ## Create Resource Group
@@ -86,9 +87,18 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
     az network nic create --subscription $subscription --location $location --resource-group $resourcegroup --vnet $sectravnet --subnet $sectrasubnetwebservers --name $sectranicshs1 --application-security-groups $sectraasgshs
     az vm create --subscription $subscription --location $location --resource-group $resourcegroup --name $sectravmshs1 --nics $sectranicshs1 --image Canonical:0001-com-ubuntu-server-focal-daily:20_04-daily-lts-gen2:Latest --os-disk-name $sectraosdiskshs1 --os-disk-size-gb 30 --size Standard_B1s --authentication-type password --admin-username ubuntu --admin-password Password123!?
 
-## Create the AKS cluster
-    az aks create --resource-group $resourcegroup --name $aks --node-count 2 --enable-aad --enable-azure-rbac --vnet-subnet-id /subscriptions/$subscriptionID/resourceGroups/$resourceGroup/providers/Microsoft.Network/virtualNetworks/$companyvnet/subnets/$companysubnetkubernetes--generate-ssh-keys
+## Create the AKS cluster (CNI Overlay)
+    az aks create --resource-group $resourcegroup --name $aks --node-count 2 --enable-aad --enable-azure-rbac --vnet-subnet-id /subscriptions/$subscriptionID/resourceGroups/$resourceGroup/providers/Microsoft.Network/virtualNetworks/$companyvnet/subnets/$companysubnetkubernetes--generate-ssh-keys 
 
+
+## Create the AKS cluster (Cilium)
+    az aks create -n myCiliumAKS -g $resourcegroup -l --node-count 2 --network-plugin azure --network-dataplane cilium --network-plugin-mode overlay --enable-aad --enable-azure-rbac --vnet-subnet-id /subscriptions/622693e3-522a-4968-af8b-d88f7a78a66a/resourceGroups/K8S-Test-Small-Env/providers/Microsoft.Network/virtualNetworks/sectra-vnet/subnets/sectra-subnet-kubernetes --generate-ssh-keys
+
+## Update the AKS Cluster to use Calico for network policies
+    az aks update --resource-group $resourcegroup --name $aks --network-policy calico
+
+## Uninstall Calico 
+    az aks update --resource-group $resourcegroup --name $aks --network-policy none
 
 ## Connect to the AKS cluster
     az aks get-credentials --resource-group $resourcegroup --name $aks 
@@ -108,6 +118,21 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
     kubectl delete pod node-debugger-aks-nodepool1-<xxxxxxxx>-<xxxxxxxxxx>-<xxxxx>
 
 
+## Create a new Azure Container Registry
+
+    az acr create --name $acr --resource-group $resourcegroup --sku basic
+
+
+## Integrate an existing ACR with an existing AKS cluster
+
+az aks update --name $aks --resource-group $resourcegroup --attach-acr $acr
+
+## Enable Azure Policy Add-on
+az aks enable-addons --addons azure-policy --name $aks --resource-group $resourcegroup
+
+## Restrict access to the API Server of a range of IP addresses
+--api-server-authorized-ip-ranges 88.131.68.200,88.131.68.201,88.131.68.202
+
 
 
 ## Useful commands
@@ -117,6 +142,11 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
     ssh ubuntu@$sectrapipmgmt1ip
 
     # Perform web request towards sectra-vm-shs1, can be run from for example sectra-vm-mgmt1
+
+    # Connect to a specific node
+    node=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+    kubectl debug node/$node -it --image=busybox
+    chroot /host
     
 
 ## Delete VMs etc to save cost
@@ -133,5 +163,7 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
     # Delete disks
     az disk delete --subscription $subscription --resource-group $resourcegroup --name $sectraosdiskshs1 --yes
     az disk delete --subscription $subscription --resource-group $resourcegroup --name $sectraosdiskmgmt1 --yes
+
+
 
 

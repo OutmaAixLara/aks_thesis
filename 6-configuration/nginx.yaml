@@ -1,0 +1,49 @@
+# bad nginx pod configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-nginx
+spec:
+  containers:
+  - name: bad-nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+---
+
+# good nginx pod configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-nginx
+spec:
+  containers:
+  - name: good-nginx
+    image: nginxinc/nginx-unprivileged:alpine3.21-perl
+    resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+    ports:
+    - containerPort: 80
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+    
+
+    
+
+      
