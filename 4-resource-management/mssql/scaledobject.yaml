@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mssql-secrets
+type: Opaque
+data:
+  mssql-connection-string: U2VydmVyPW1zc3FsLWRlcGxveW1lbnQuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbDtwb3J0PTE0MzM7RGF0YWJhc2U9ZGVtb0RCO1BlcnNpc3QgU2VjdXJpdHkgSW5mbz1GYWxzZTtVc2VyIElEPVNBO1Bhc3N3b3JkPWpLclNGNjc3VFRSUDtFbmNyeXB0PUZhbHNlO1RydXN0U2VydmVyQ2VydGlmaWNhdGU9VHJ1ZTs=
+---
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-trigger-auth-mssql-secret
+spec:
+  secretTargetRef:
+  - parameter: connectionString
+    name: mssql-secrets
+    key: mssql-connection-string
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: mssql-scaledobject
+spec:
+  scaleTargetRef:
+    name: helloaachen 
+  pollingInterval: 1 
+  cooldownPeriod: 20 
+  maxReplicaCount: 10
+  minReplicaCount: 0
+  triggers:
+  - type: mssql
+    metadata:
+      targetValue: "5"
+      query: "SELECT count(*) FROM demo WHERE state  = 'queued'"
+    authenticationRef:
+      name: keda-trigger-auth-mssql-secret

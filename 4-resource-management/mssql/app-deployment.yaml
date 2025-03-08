@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloaachen
+spec:
+  selector:
+    matchLabels:
+      app: helloaachen
+  template:
+    metadata:
+      labels:
+        app: helloaachen
+    spec:
+      containers:
+      - name: helloaachen
+        image: moaix/helloaachen:v1
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 300m
+            memory: "100Mi"
+          requests:
+            cpu: 100m
+            memory: "50Mi"
+        env:
+        - name: ConnectionStrings__WebAppContext
+          value: "Server=mssql-deployment;Database=demoDB;User ID=SA;Password=jKrSF677TTRP;Encrypt=False;"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: helloaachen-service
+spec:
+  selector:
+    app: helloaachen
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+  type: LoadBalancer
+
+
+  
