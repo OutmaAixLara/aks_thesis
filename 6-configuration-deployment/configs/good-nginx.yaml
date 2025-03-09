@@ -1,0 +1,55 @@
+# good nginx pod configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-nginx
+  namespace: demo
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 10000
+  containers:
+  - name: good-nginx
+    image: nginxinc/nginx-unprivileged@sha256:<digest>
+    imagePullPolicy: Always
+    resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+    ports:
+    - containerPort: 80
+    securityContext:
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+      runAsUser: 10000  
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      seccompProfile:
+        type: RuntimeDefault
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 10
+  automountServiceAccountToken: false
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: demo
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress

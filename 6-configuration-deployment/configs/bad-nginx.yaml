@@ -1,0 +1,11 @@
+# bad nginx pod configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-nginx
+spec:
+  containers:
+  - name: bad-nginx
+    image: nginx
+    ports:
+    - containerPort: 80
