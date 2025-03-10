@@ -40,29 +40,4 @@ for i in {1..3}; do
     ${LOAD_TEST_CMD} -z 30s -q 10 -c 5 http://${INGRESS_IP}/productpage
 done
 
-
-echo "Adding a custom header via annotation..."
-kubectl patch ingress ${INGRESS_NAME} -n ${BOOKINFO_NAMESPACE} --type merge -p '{
-  "metadata": {
-    "annotations": {
-      "nginx.ingress.kubernetes.io/configuration-snippet": "more_set_headers \"X-Test: hello\";"
-    }
-  }
-}'
-sleep 30
-echo "Load test with custom header added..."
-${LOAD_TEST_CMD} -z 30s -q 10 -c 5 http://${INGRESS_IP}/productpage
-
-echo "Removing the custom header annotation..."
-kubectl patch ingress ${INGRESS_NAME} -n ${BOOKINFO_NAMESPACE} --type merge -p '{
-  "metadata": {
-    "annotations": {
-      "nginx.ingress.kubernetes.io/configuration-snippet": null
-    }
-  }
-}'
-sleep 30
-echo "Load test after removing custom header..."
-${LOAD_TEST_CMD} -z 30s -q 10 -c 5 http://${INGRESS_IP}/productpage
-
 echo "Benchmark completed."
