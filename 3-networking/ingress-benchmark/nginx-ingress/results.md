@@ -1,6 +1,6 @@
 $ ./ingress-benchmark/nginx-ingress/nginx-bm.sh
 NGINX Ingress External IP: 9.223.152.37
-Starting baseline load test...
+Baseline load test...
 
 Summary:
   Total:        30.0945 secs
