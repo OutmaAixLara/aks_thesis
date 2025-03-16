@@ -40,14 +40,14 @@ on:
 env:
   ACR_RESOURCE_GROUP: K8S-Test-Small-Env
   AZURE_CONTAINER_REGISTRY: acrthesis
-  CONTAINER_NAME: image-workflow-1742135387439
+  CONTAINER_NAME: image-workflow-1742136538889
   CLUSTER_NAME: myCiliumAKS
   CLUSTER_RESOURCE_GROUP: K8S-Test-Small-Env
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DEPLOYMENT_MANIFEST_PATH: ./manifests
-  DOCKER_FILE: 1-complexity/aks-automatic/Dockerfile
+  DOCKER_FILE: ./1-complexity/aks-automatic/Dockerfile
   BUILD_CONTEXT_PATH: ./
-  NAMESPACE: namespace-workflow-1742135387439
+  NAMESPACE: namespace-workflow-1742136538889
   ENABLENAMESPACECREATION: false
 
 jobs:
