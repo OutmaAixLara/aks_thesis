@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aks-automatic
+  namespace: namespace-workflow-1742138279613
+  labels:
+    app.kubernetes.io/name: aks-automatic
+    kubernetes.azure.com/generator: devhub
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: aks-automatic
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
