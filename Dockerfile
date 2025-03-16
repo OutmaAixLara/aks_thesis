@@ -5,4 +5,4 @@ WORKDIR /apps
 COPY . /apps
 
 ENTRYPOINT ["python"]
-CMD ["app.py"]
+CMD ["helloaachen.py"]
