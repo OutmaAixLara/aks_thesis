@@ -47,7 +47,7 @@ env:
   DEPLOYMENT_MANIFEST_PATH: ./manifests
   DOCKER_FILE: ./1-complexity/aks-automatic/Dockerfile
   BUILD_CONTEXT_PATH: ./
-  NAMESPACE: namespace-workflow-1742136538889
+  NAMESPACE: namespace-workflow-1742129054950
   ENABLENAMESPACECREATION: false
 
 jobs:
