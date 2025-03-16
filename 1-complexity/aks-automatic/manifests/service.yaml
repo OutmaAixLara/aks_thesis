@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aksauto-demo
+  namespace: namespace-workflow-1742142410880
+  labels:
+    app.kubernetes.io/name: aksauto-demo
+    kubernetes.azure.com/generator: devhub
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: aksauto-demo
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
