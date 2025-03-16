@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: aksautomatic-demo-config
-  namespace: namespace-workflow-1742136538889
+  namespace: namespace-workflow-1742129054950
   labels:
     app.kubernetes.io/name: aksautomatic-demo
     kubernetes.azure.com/generator: devhub
