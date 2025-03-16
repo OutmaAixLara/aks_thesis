@@ -1,6 +1,6 @@
 $ ./ingress-benchmark/istio-ingress/istio-bm.sh
 Istio Ingress External IP: 9.223.144.29
-Starting baseline load test...
+Baseline load test...
 
 Summary:
   Total:        30.0740 secs
@@ -340,3 +340,4 @@ Status code distribution:
   [200] 1290 responses
 
 Benchmark completed.
+
