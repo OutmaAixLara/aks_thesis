@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: aksautomatic-demo
     kubernetes.azure.com/generator: devhub
-  namespace: namespace-workflow-1742136538889
+  namespace: namespace-workflow-1742129054950
 spec:
   replicas: 1
   selector:
