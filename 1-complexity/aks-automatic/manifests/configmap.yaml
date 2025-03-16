@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aks-automatic-config
+  namespace: namespace-workflow-1742138279613
+  labels:
+    app.kubernetes.io/name: aks-automatic
+    kubernetes.azure.com/generator: devhub
+data:
