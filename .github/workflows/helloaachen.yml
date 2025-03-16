@@ -44,7 +44,7 @@ env:
   CLUSTER_NAME: myCiliumAKS
   CLUSTER_RESOURCE_GROUP: K8S-Test-Small-Env
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
-  DEPLOYMENT_MANIFEST_PATH: ./manifests
+  DEPLOYMENT_MANIFEST_PATH: ./1-complexity/aks-automatic
   DOCKER_FILE: ./1-complexity/aks-automatic/Dockerfile
   BUILD_CONTEXT_PATH: ./
   NAMESPACE: namespace-workflow-1742139886396
