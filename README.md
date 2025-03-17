@@ -1,16 +1,18 @@
-# aks_thesis
+# Kubernetes Best Practices for AKS  
+This repository demonstrates some best practices for deploying and securing Azure Kubernetes Service (AKS) clusters. It includes hands-on validation of tools like **Falco**, **KubeArmor**, **KEDA** and performance benchmarking of ingress controllers.
 
-## Azure Policy
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-5.png)
-![alt text](image-6.png)
+## Features
+- AKS cluster hardening with Azure Policy and CIS benchmarks.
+- Runtime security testing with Falco and KubeArmor.
+- Dynamic scaling using KEDA (tested with MSSQL).
+- Ingress controller performance analysis (Istio, Traefik, Cilium, Azure App Routing).
 
-## MS Defender for Cloud
-![alt text](image-7.png)
+## Quick Start
+1. **Prerequisites**:
+   - Azure CLI (`az`)
+   - Kubernetes CLI (`kubectl`)
+   - Helm
 
-## Monitor
-![alt text](image-8.png)
+2. **AKS Cluster Provisioning**:
 
-## Advisor
-![alt text](image-9.png)
+   Please refer to `SmallEnv\SmallVMEnvironment.md` to spin up the AKS cluster.
