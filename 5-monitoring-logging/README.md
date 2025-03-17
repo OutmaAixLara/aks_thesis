@@ -32,7 +32,7 @@
 ## Access Grafana UI through Port-forwarding
     kubectl port-forward --namespace monitoring svc/prometheus-grafana 8080:80
 
-# Open in the browser
+## Open in the browser
     http://localhost:8080
 
     # The username is admin and the password is prom-operator
