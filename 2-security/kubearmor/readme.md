@@ -1,10 +1,12 @@
-helm repo add kubearmor https://kubearmor.github.io/charts
+## Install KubeArmor
 
-helm repo update kubearmor
+    helm repo add kubearmor https://kubearmor.github.io/charts
 
-helm upgrade --install kubearmor-operator kubearmor/kubearmor-operator -n kubearmor --create-namespace
+    helm repo update kubearmor
 
-kubectl apply -f https://raw.githubusercontent.com/kubearmor/KubeArmor/main/pkg/KubeArmorOperator/config/samples/sample-config.yml 
+    helm upgrade --install kubearmor-operator kubearmor/kubearmor-operator -n kubearmor --create-namespace
+
+    kubectl apply -f https://raw.githubusercontent.com/kubearmor/KubeArmor/main/pkg/KubeArmorOperator/config/samples/sample-config.yml 
 
 
 
