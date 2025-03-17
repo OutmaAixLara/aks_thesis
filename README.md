@@ -16,3 +16,8 @@ This repository demonstrates some best practices for deploying and securing Azur
 2. **AKS Cluster Provisioning**:
 
    Please refer to `SmallEnv\SmallVMEnvironment.md` to spin up the AKS cluster.
+
+3. **Ingress Benchmarking**:
+
+   Ingress benchmarking scripts and results are under `3-networking\ingress-benchmark`
+
