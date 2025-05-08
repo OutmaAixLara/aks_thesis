@@ -28,7 +28,7 @@ The environment have two VMs, one in the Management subnet, and one in the WebSe
 
 ![Overview](SmallEnvironment.png)
 
-## Paramaters
+## Parameters
 
 
     subscription=<Subscription>
