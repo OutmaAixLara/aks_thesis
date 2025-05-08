@@ -4,7 +4,7 @@ This environment builds a VNet with subnets to create a segmented simplified env
 
 The environment have two VMs, one in the Management subnet, and one in the WebServers subnet.
 
-![Overview](SmallEnvironmentOverview.png)
+![Overview](SmallEnvironment.png)
 
 ## Paramaters
 
